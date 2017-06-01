@@ -1,6 +1,6 @@
 <template lang="pug">
     #app
-      img(src='./assets/logo.png')
+      img(src='assets/logo.png')
       h1 TrendingMusic
       h2 Top Artist in Last.Fm
       select(v-model="selectedCountry")
