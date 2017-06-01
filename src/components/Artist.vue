@@ -14,6 +14,6 @@ export default{
 
 <style lang="stylus" scoped>
 li
-  display block
-  margin 10px 0
+  display inline-block
+  margin 10px 5px
 </style>

@@ -2,6 +2,9 @@
     #app
       img(src='./assets/logo.png')
       h1 TrendingMusic
+      h2 Top Artist in Last.Fm
+      select(v-model="selectedCountry")
+        option(v-for="country of countries" v-bind:value="country.value") {{ country.name }}
       ul
         artist(v-for="artist in artists" v-bind:artist="artist" v-bind:key="artist.mbid")
 </template>
@@ -14,16 +17,32 @@ export default {
   name: 'app',
   data () {
     return {
-      artists: []
+      artists: [],
+      countries: [
+        {name: 'Guatemala', value: 'guatemala'},
+        {name: 'Argentina', value: 'argentina'},
+        {name: 'España', value: 'spain'},
+      ],
+      selectedCountry: 'guatemala'
     }
   },
   components: {Artist: Artist},
-  mounted: function(){
-    const self = this
-    getArtist()
-      .then(function(artists){
-        self.artists = artists;
-      })
+  methods: {
+    refreshArtist(){
+      const self = this
+      getArtist(this.selectedCountry)
+        .then(function(artists){
+          self.artists = artists;
+        })
+    }
+  },
+  mounted(){
+    this.refreshArtist()
+  },
+  watch:{
+    selectedCountry(){
+      this.refreshArtist()
+    }
   }
 }
 </script>
