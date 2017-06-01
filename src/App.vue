@@ -5,12 +5,14 @@
       h2 Top Artist in Last.Fm
       select(v-model="selectedCountry")
         option(v-for="country of countries" v-bind:value="country.value") {{ country.name }}
+      spinner(v-show="loading")
       ul
         artist(v-for="artist in artists" v-bind:artist="artist" v-bind:key="artist.mbid")
 </template>
 
 <script>
 import Artist from './components/Artist.vue'
+import Spinner from './components/Spinner.vue'
 import getArtist from './api'
 
 export default {
@@ -23,15 +25,19 @@ export default {
         {name: 'Argentina', value: 'argentina'},
         {name: 'España', value: 'spain'},
       ],
-      selectedCountry: 'guatemala'
+      selectedCountry: 'guatemala',
+      loading: true
     }
   },
-  components: {Artist: Artist},
+  components: {Artist: Artist, Spinner: Spinner},
   methods: {
     refreshArtist(){
-      const self = this
+      const self = this;
+      this.artists = []
+      this.loading = true;
       getArtist(this.selectedCountry)
         .then(function(artists){
+          self.loading = false;
           self.artists = artists;
         })
     }
